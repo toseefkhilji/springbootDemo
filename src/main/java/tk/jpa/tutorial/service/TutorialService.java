@@ -25,8 +25,7 @@ public class TutorialService {
 //        return tutorialRepository.findByTitleContaining(title);
 //    }
 
-	public void saveOrUpdate(Tutorial tut)   
-	{  
+	public void saveOrUpdate(Tutorial tut) {  
 		tutorialRepository.save(tut);  
 	} 
 
