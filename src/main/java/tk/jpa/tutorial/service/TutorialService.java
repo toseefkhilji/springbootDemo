@@ -17,6 +17,9 @@ public class TutorialService {
 	@Autowired
 	TutorialRepository tutorialRepository;
 	
+	@Autowired
+	TutorialDAO dao;
+	
 	public List<Tutorial> getAllTutorial() {
         return tutorialRepository.findAll();
     }
@@ -29,6 +32,19 @@ public class TutorialService {
 		tutorialRepository.save(tut);  
 	} 
 
+	public void update(Long id, Tutorial tut) {  
+		System.out.println("Started update");
+
+		Tutorial newTut = tutorialRepository.findById(id).get();
+		newTut.setName(tut.getName());
+		newTut.setAuthor(tut.getAuthor());
+		newTut.setPrice(tut.getPrice());
+
+		System.out.println("update called");
+		System.out.println(newTut.toString());
+		tutorialRepository.save(newTut);
+	} 
+	
     public Optional<Tutorial> findOne(Long id) {
         return tutorialRepository.findById(id);
     }
@@ -39,6 +55,22 @@ public class TutorialService {
 
     public String deleteUser(Long id) {
     	tutorialRepository.deleteById(id);
-        return "User deleted successfully";
+        return "{ status: 1, message = User deleted successfully }";
     }
+    
+    public List<Tutorial> getFilteredByName(String tname) {
+    	return  tutorialRepository.findByNameContaining(tname);
+    }
+    
+    public List<Tutorial> getFilteredByAuthor(String author) {
+    	return  tutorialRepository.findByAuthor(author);
+    }
+    
+    public List<Tutorial> getAllRecords() {
+    	return  dao.getAllRecords();
+    }
+    
+    public List<Tutorial> getAllRecords(String name) {
+    	return tutorialRepository.getAllRecords(name);
+    } 
 }

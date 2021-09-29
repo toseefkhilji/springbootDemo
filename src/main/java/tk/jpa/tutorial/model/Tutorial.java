@@ -5,34 +5,44 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.NamedNativeQuery;
+
 @Entity
+@DynamicUpdate
 @Table(name = "Tutorial")
+@NamedNativeQuery(name = "getAllRecords", query = "Select * from Tutorial", resultClass = Tutorial.class)
+@NamedQuery(name = "Tutorial.getAllRecords", query = "FROM Tutorial WHERE TutorialName = ?1")
+//@NamedQuery(name = "Tutorial.update", query = "Update Tutorial set WHERE TutorialName = ?1, Author = ?2 Where TutorialId = ?3")
+
 public class Tutorial {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "tutorial_id")
+    @Column(name = "TutorialId")
 	private Long id;
 	
-    @Column(name = "name", nullable = false)
+    @Column(name = "TutorialName", nullable = false)
 	@NotBlank(message = "Name is mandatory")
 	@Size(min=4, message= "Name should have at least 4 characters")  
 	private String name;
 	
-    @Column(name = "author", nullable = true)
+    @Column(name = "Author", nullable = true)
 	private String author;
    
+    @Column(name="Price", nullable = true)
+    private double price = 0.0;
+    
 	public Tutorial() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Tutorial(Long id,
-			@NotBlank(message = "Name is mandatory") @Size(min = 4, message = "Name should have at least 4 characters") String name,
-			String author) {
+	public Tutorial(Long id, String name, String author) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -63,9 +73,17 @@ public class Tutorial {
 		this.author = author;
 	}
 	
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	@Override
 	public String toString() {
-		return "Tutorial [id=" + id + ", name=" + name + ", author=" + author + "]";
+		return "Tutorial [id=" + id + ", name=" + name + ", author=" + author + ", price=" + price + "]";
 	}
 	
 }

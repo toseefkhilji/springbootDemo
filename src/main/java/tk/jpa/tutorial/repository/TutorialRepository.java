@@ -9,6 +9,9 @@ import tk.jpa.tutorial.model.Tutorial;
 
 @Repository
 public interface TutorialRepository extends JpaRepository<Tutorial, Long> {
-	
-	public void fetchOneColumn(String name);
+	List<Tutorial> findByName(String name);
+	List<Tutorial> findByAuthor(String author);
+	List<Tutorial> findByNameContaining(String name);
+	List<Tutorial> getAllRecords (String name); 
+
 }
